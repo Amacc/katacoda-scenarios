@@ -25,7 +25,12 @@
       "uieditorpath": "/root/example",
       "showide": true,
       "idePort": 23000,
-      "uilayout": "terminal"
+      "uilayout": "terminal",
+      "dashboards": [
+        {"name": "Display 80", "port": 80},
+        {"name": "Display 8080", "port": 8080}
+      ],
+      "showdashboard": true
   },
   "backend": {
     "imageid": "kubernetes-cluster-running:1.18"

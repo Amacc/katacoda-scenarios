@@ -1,49 +1,19 @@
-# Installing the Operator
 
-Ansible is managed in kubernetes via the ansible operator.
+# Prereqs
 
-Lets start with an installation into kubernetes.
-
-`kubectl apply -f https://raw.githubusercontent.com/ansible/awx-operator/devel/deploy/awx-operator.yaml`{{execute}}
-
-
-Now lets create an AWX resource
+First lets start with the quick prereqs, we will need a default stoarge class
+for the stateful sets to store their data.
 
 ```bash
 cat <<EOF | kubectl apply -f -
-apiVersion: awx.ansible.com/v1beta1
-kind: AWX
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
 metadata:
-  name: awx
+  name: local-storage
+  annotations:
+    "storageclass.kubernetes.io/is-default-class":"true"
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
 EOF
-```{{execute}}
-
-With an ingress
-
-```bash
-cat <<EOF | kubectl apply -f -
-apiVersion: awx.ansible.com/v1beta1
-kind: AWX
-metadata:
-  name: awx-w-ingress
-spec:
-  tower_ingress_type: Ingress
-  tower_hostname: awx.mycompany.com
-EOF
-```{{execute}}
-
-`[[HOST_IP]]`{{execute}}
-
-With a loadbalancer
-
-```bash
-cat <<EOF | kubectl apply -f -
-apiVersion: awx.ansible.com/v1beta1
-kind: AWX
-metadata:
-  name: awx-w-loadbalancer
-spec:
-  tower_ingress_type: LoadBalancer
-  tower_loadbalancer_protocol: http
-EOF
-```{{execute}}
+```
+{{execute}}

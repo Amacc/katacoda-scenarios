@@ -10,10 +10,11 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: local-storage
-  annotations:
-    "storageclass.kubernetes.io/is-default-class":"true"
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 EOF
+```{{execute}}
+
 ```
-{{execute}}
+kubectl patch storageclass local-storage -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+```{{execute}}
